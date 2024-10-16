@@ -6,6 +6,7 @@ export const CLASS_TOOLTIP = 'littlefoot__tooltip'
 
 export type Position = 'above' | 'below'
 
+// Computes the horizontal position of an element relative to the window width.
 function getLeftRelative(element: HTMLElement): number {
   const marginLeft = Number.parseFloat(getStyle(element, 'marginLeft'))
   const width = element.offsetWidth - marginLeft
@@ -14,6 +15,7 @@ function getLeftRelative(element: HTMLElement): number {
   return left / window.innerWidth
 }
 
+// Calculates the left position in pixels for a popover relative to its associated button. 
 export function getLeftInPixels(
   content: HTMLElement,
   button: HTMLElement,
@@ -24,10 +26,13 @@ export function getLeftInPixels(
   return -leftRelative * maxWidth + buttonMarginLeft + button.offsetWidth / 2
 }
 
+// Returns the maximum height of an element in pixels. 
 export function getMaxHeight(element: HTMLElement) {
   return Math.round(pixels(getStyle(element, 'maxHeight'), element))
 }
 
+// Determines the best position ('above' or 'below') to display a popover relative to its 
+// associated button, based on available screen space.
 function getFootnotePosition(
   button: HTMLElement,
   popover: HTMLElement,
@@ -42,6 +47,7 @@ function getFootnotePosition(
     : ['above', roomAbove - marginSize - 15]
 }
 
+// Repositions the popover relative to the button based on available screen space.
 export function repositionPopover(
   popover: HTMLElement,
   button: HTMLElement,
@@ -60,6 +66,7 @@ export function repositionPopover(
   return [next, room]
 }
 
+// Repositions a tooltip element inside the popover based on the button's position.
 export function repositionTooltip(
   popover: HTMLElement,
   button: HTMLElement,

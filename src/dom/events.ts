@@ -3,12 +3,16 @@ import type { FootnoteAction, UseCases } from '../use-cases'
 
 const SELECTOR_FOOTNOTE = '[data-footnote-id]'
 
+// Finds the closest ancestor of the event target that matches a given selector.
 const closestTarget = (event: Event, selector: string) =>
   (event.target as HTMLElement).closest<HTMLElement>(selector)
 
+// Retrieves the data-footnote-id attribute from an HTML element.
 const getFootnoteId = (element: HTMLElement | null) =>
   element?.dataset.footnoteId
 
+// Handles hover events for footnotes. When the user hovers over a footnote element, 
+// it triggers the provided action (such as showing or hiding the footnote).
 const hoverHandler = (action: FootnoteAction) => (event: Event) => {
   event.preventDefault()
   const element = closestTarget(event, SELECTOR_FOOTNOTE)
@@ -21,6 +25,8 @@ const hoverHandler = (action: FootnoteAction) => (event: Event) => {
 const onDocument = document.addEventListener
 const onWindow = window.addEventListener
 
+// Delegates an event listener to a specific selector. The event listener is 
+// attached to the document, but it only triggers if the event's target matches the given selector.
 const delegate = (
   eventType: string,
   selector: string,
@@ -38,6 +44,8 @@ const delegate = (
     options,
   )
 
+// Adds various event listeners to manage user interactions with footnotes (touch, click, hover, scroll, resize, etc.). 
+// Throttling is applied to the scroll and resize event handlers for performance optimization.
 export function addListeners(useCases: UseCases): () => void {
   const toggleOnTouch = (event: Event) => {
     const element = closestTarget(event, '[data-footnote-button]')

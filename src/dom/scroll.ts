@@ -3,6 +3,7 @@ import { addClass, removeClass } from './element'
 
 const CLASS_FULLY_SCROLLED = 'is-fully-scrolled'
 
+// Returns an event handler function for handling the wheel event.
 const scrollHandler = (popover: HTMLElement) => (event: WheelEvent) => {
   const content = event.currentTarget as HTMLElement | null
   const delta = -event.deltaY
@@ -20,6 +21,7 @@ const scrollHandler = (popover: HTMLElement) => (event: WheelEvent) => {
   }
 }
 
+// Binds a throttled scroll event handler to the content element of a popover.
 export function bindScrollHandler(
   content: HTMLElement,
   popover: HTMLElement,

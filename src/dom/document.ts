@@ -26,9 +26,11 @@ type TemplateValues = Readonly<{
 
 const CLASS_PRINT_ONLY = 'littlefoot--print'
 
+// Adds the print-only class to a set of elements, making them visible only when the page is printed.
 const setAllPrintOnly = (...elements: readonly Element[]) =>
   elements.forEach((e) => addClass(e, CLASS_PRINT_ONLY))
 
+// Queries all matching elements within a parent node based on a CSS selector
 function queryAll<E extends Element>(
   parent: ParentNode,
   selector: string,
@@ -36,6 +38,7 @@ function queryAll<E extends Element>(
   return Array.from(parent.querySelectorAll<E>(selector))
 }
 
+// Finds an element by class name within a given element or returns the first child if no class match is found.
 function getByClassName<E extends Element>(element: E, className: string): E {
   return (
     element.querySelector<E>('.' + className) ||
@@ -44,6 +47,7 @@ function getByClassName<E extends Element>(element: E, className: string): E {
   )
 }
 
+// Creates an HTML element
 function createElementFromHTML(html: string): HTMLElement {
   const container = document.createElement('div')
   container.innerHTML = html
@@ -52,10 +56,12 @@ function createElementFromHTML(html: string): HTMLElement {
   return element
 }
 
+// Checks whether a value is defined
 function isDefined<T>(value?: T): value is T {
   return value !== undefined
 }
 
+// Finds all footnote links within a document that match the given pattern.
 function findFootnoteLinks(
   document: Document,
   pattern: RegExp,
@@ -66,6 +72,7 @@ function findFootnoteLinks(
   )
 }
 
+// Finds the reference element associated with a footnote link, based on the footnote's ID in the URL fragment.
 function findReference<E extends Element>(
   document: Document,
   allowDuplicates: boolean,
@@ -88,6 +95,7 @@ function findReference<E extends Element>(
   }
 }
 
+// Recursively hides footnote containers if they only contain print-only elements.
 function recursiveHideFootnoteContainer(element: Element): void {
   // biome-ignore lint/style/noNonNullAssertion: <explanation>
   const container = element.parentElement!
@@ -103,6 +111,7 @@ function recursiveHideFootnoteContainer(element: Element): void {
   }
 }
 
+// Recursively removes an element and its ancestors until the stopElement is reached.
 function recursiveUnmount(element: Element, stopElement: Element) {
   const parent = element.parentElement
   element.remove()
@@ -115,6 +124,7 @@ function recursiveUnmount(element: Element, stopElement: Element) {
   }
 }
 
+// Prepares template data for rendering a footnote, including removing backlinks from the content and formatting the HTML.
 function prepareTemplateData<E extends Element>(
   [id, reference, body]: [string, E, E],
   index: number,
@@ -138,6 +148,7 @@ function prepareTemplateData<E extends Element>(
   ]
 }
 
+// Resets the numbering of footnotes based on a reset selector.
 function resetNumbers<E extends Element>(resetSelector: string) {
   let number = 0
   let previousParent: E | null = null
@@ -153,6 +164,7 @@ function resetNumbers<E extends Element>(resetSelector: string) {
   }
 }
 
+// Creates a function that interpolates a string template with values from a
 function interpolate(template: string) {
   return (replacement: TemplateValues) =>
     template.replace(/<%=?\s*(\w+?)\s*%>/g, (_, key: keyof TemplateValues) =>
@@ -160,6 +172,7 @@ function interpolate(template: string) {
     )
 }
 
+// Creates button and popover elements for footnotes using provided templates.
 function createElements<E extends Element>(
   buttonTemplate: string,
   popoverTemplate: string,
@@ -193,6 +206,8 @@ function createElements<E extends Element>(
   }
 }
 
+// Initializes the footnote adapter with the provided settings, finds footnote 
+// links in the document, processes them, and sets up the required HTML elements for the footnotes.
 export function setup({
   allowDuplicates,
   anchorParentSelector,
